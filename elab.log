@@ -1,0 +1,18 @@
+Command: synth_design -rtl -top Park_Sys
+Starting synth_design
+Using part: xc7a35ticpg236-1L
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [E:/K.O/Indivudual Projects/Parking System/project_1/basys_master.xdc]
+Finished Parsing XDC File [E:/K.O/Indivudual Projects/Parking System/project_1/basys_master.xdc]
+Completed Processing XDC Constraints
+
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+RTL Elaboration Complete:  : Time (s): cpu = 00:00:52 ; elapsed = 00:01:40 . Memory (MB): peak = 1348.629 ; gain = 539.164
+3 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
