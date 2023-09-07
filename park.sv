@@ -1,4 +1,5 @@
 `timescale 1ns / 1ns
+`include "FIFO.sv"
 module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_LED,Red_LED);
   parameter IDLE = 3'b000,
             WAIT_PASSWORD = 3'b001,
@@ -29,7 +30,7 @@ module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_
       cs <= ns;
   end
 
-  always@(posedge clk)
+  always@(cs)
   begin
 
 
@@ -92,7 +93,7 @@ module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_
 
   end
 
-  always@(posedge clk)
+  always@(cs)
   begin
 
     if(cs==IDLE)
