@@ -1,5 +1,4 @@
 `timescale 1ns / 1ns
-`include "FIFO.sv"
 module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_LED,Red_LED);
   parameter IDLE = 3'b000,
             WAIT_PASSWORD = 3'b001,
@@ -13,7 +12,7 @@ module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_
   output reg Green_LED,Red_LED;
   output   [8:0] place_in;
   wire full,empty;
-  reg enable,BUF;
+  reg enable;
   wire [15:0] place_out;
 
   MEM M0 (enable,16'hFFFF,sen_in,sen_out,clk,clk,~rst_n,place_out,full,empty,place_in);
@@ -30,7 +29,7 @@ module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_
       cs <= ns;
   end
 
-  always@(cs)
+  always@(cs,Right,Wrong)
   begin
 
 
@@ -55,12 +54,10 @@ module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_
 
     else if (cs==CHK_PASS)
     begin
-      if(Wrong==1'b0 && Right==1'b1)
+      if(Right==1'b1)
         ns<=RIGHT_PASS;
-      else if(Wrong==1'b1 && Right==1'b0)
+      else if(Wrong==1'b1)
         ns<=WRONG_PASS;
-      else
-        ns<= CHK_PASS;
     end
 
     else if(cs==WRONG_PASS)
@@ -132,11 +129,7 @@ module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_
 
       end
 
-      if(ns==RIGHT_PASS && (sen_in==0 && sen_out==1))
-      begin
-        BUF=1;
-        enable=BUF;
-      end
+
 
     end
 
@@ -147,15 +140,8 @@ module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_
       begin
         Red_LED<=1'b1;
         Green_LED<=1'b1;
+                enable=1;
       end
-
-      if(ns==PLACING)
-      begin
-        BUF=1;
-        enable=BUF;
-      end
-
-    end
 
     else if(cs==WRONG_PASS)
     begin
@@ -164,10 +150,10 @@ module Park_Sys (clk,rst_n,sen_in,sen_out,password,EXIT,Re_Enter,place_in,Green_
       Red_LED<=1'b0;
 
     end
-
+end
     else if(cs==PLACING && EXIT==1'b1)
     begin
-      enable<=0;
+      enable<=1;
       Green_LED <= 1'b1;
       Red_LED <= 1'b0;
     end
